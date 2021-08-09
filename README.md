@@ -384,4 +384,71 @@ c6691103d32b   madhvipython:v1   "python3 /mycode/ora…"   5 seconds ago    Up 
 
 ```
 
+###  python app containerization 
+
+<img src="pyapp.png">
+
+### building docker image for python in another way ...
+
+```
+[ashu@ip-172-31-9-158 pythonapp]$ ls
+Dockerfile  oracle.py  python1.dockerfile
+[ashu@ip-172-31-9-158 pythonapp]$ docker  build  -t  ashupython:v2  -f python1.dockerfile   .  
+Sending build context to Docker daemon  4.608kB
+Step 1/5 : FROM  python
+latest: Pulling from library/python
+627b765e08d1: Pull complete 
+c040670e5e55: Pull complete 
+073a180f4992: Pull complete 
+bf76209566d0: Pull complete 
+ca7044ed766e: Pull complete 
+7b16520e0e66: Pull complete 
+e121e5a178df: Pull complete 
+abbaf10bd160: Pull complete 
+17cd945c5d4d: Pull complete 
+Digest: sha256:7a93befe45f3afb6b3377c91ef1e8b28e7b84dc70bbb43fc723415d1ad613bdc
+Status: Image is up to date for python:latest
+ ---> 59433749a9e3
+Step 2/5 : LABEL  email="ashutoshh@linux.com"
+ ---> Running in 1c4dd547ab76
+Removing intermediate container 1c4dd547ab76
+ ---> cacb52a40830
+Step 3/5 : RUN  mkdir  /mycode
+ ---> Running in 0049f42c745c
+Removing intermediate container 0049f42c745c
+ ---> 622bb6d8b698
+Step 4/5 : COPY  oracle.py  /mycode/oracle.py
+ ---> a7aba2561ccc
+Step 5/5 : CMD  ["python","/mycode/oracle.py"]
+ ---> Running in 006d80ad7eb1
+Removing intermediate container 006d80ad7eb1
+ ---> 235e364ea6f7
+Successfully built 235e364ea6f7
+Successfully tagged ashupython:v2
+
+```
+
+## checking image build history 
+```
+[ashu@ip-172-31-9-158 pythonapp]$ docker  history  ashupyhon:v1  
+IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT
+4edcbc4ed676   55 minutes ago   /bin/sh -c #(nop)  CMD ["python3" "/mycode/o…   0B        
+030ba21af8eb   55 minutes ago   /bin/sh -c #(nop) COPY file:6e29d47c004b1169…   231B      
+c5776b1cddc5   55 minutes ago   /bin/sh -c mkdir  /mycode                       0B        
+7612373d9674   55 minutes ago   /bin/sh -c dnf  install python3 -y              146MB     
+209e8093ea86   55 minutes ago   /bin/sh -c #(nop)  LABEL email=ashutoshh@lin…   0B        
+6c0485cb8463   2 weeks ago      /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B        
+<missing>      2 weeks ago      /bin/sh -c #(nop) ADD file:22e24f7ea9b05c694…   247MB     
+
+```
+
+### Building docker. image for python 
+
+```
+docker  build  -t  ashupython:v3  -f  pythonalpine.dockerfile  .
+
+```
+
+
+
 
