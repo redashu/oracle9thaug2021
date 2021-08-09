@@ -141,3 +141,98 @@ oraclelinux   8.3       816d99f0bbe8   3 months ago   224MB
 
 ```
 
+### creating a new container 
+
+<img src="cont11.png">
+
+### check list of running containers
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  ps
+CONTAINER ID   IMAGE           COMMAND            CREATED          STATUS          PORTS     NAMES
+ab50525e6760   alpine:latest   "ping localhost"   17 seconds ago   Up 16 seconds             ashuc1
+```
+
+### checking output of a container 
+
+```
+ 40  docker  logs  ashuc1  
+ 
+docker  logs  -f  ashuc1  
+
+```
+
+### Container resource consumption 
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  stats  
+
+
+CONTAINER ID   NAME         CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O   PIDS
+d3f4a3140887   ishita       0.01%     656KiB / 7.788GiB     0.01%     850B / 0B     0B / 0B     1
+6f2c9c68333c   prasct1      0.01%     716KiB / 7.788GiB     0.01%     850B / 0B     0B / 0B     1
+84a115bdef61   shailendra   0.01%     744KiB / 7.788GiB     0.01%     850B / 0B     0B / 0B     1
+75594a63f6ce   sivaalpine   0.01%     696KiB / 7.788GiB     0.01%     850B / 0B     0B / 0B     1
+9551f8989817   madhvic1     0.01%     1.156MiB / 7.788GiB   0.01%     850B / 0B     0B / 0B     1
+9de41e467f39   shreyac1     0.01%     724KiB / 7.788GiB     0.01%     850B / 0B     0B / 0B     1
+ca1d91898cd8   arjun        0.01%     692KiB / 7.788GiB     0.01%     850B / 0B     0B / 0B     1
+c9bbf7d8cadd   shwetabhc1   0.01%     724KiB / 7.788GiB     0.01%     920B / 0B     0B / 0B     1
+ab50525e6760   ashuc1       0.01%     720KiB / 7.788GiB     0.01%     1.28kB / 0B   0B / 0B     1
+
+```
+
+### stop a running container 
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  stop   ashuc1   
+ashuc1
+
+```
+
+### starting a stopped container
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  start  ashuc1 
+ashuc1
+[ashu@ip-172-31-9-158 ~]$ docker  ps
+CONTAINER ID   IMAGE           COMMAND            CREATED          STATUS         PORTS     NAMES
+ab50525e6760   alpine:latest   "ping localhost"   14 minutes ago   Up 7 seconds             ashuc1
+
+```
+
+### login into a running container 
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  exec  -it   ashuc1  sh  
+/ # ls 
+bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
+/ # ifconfig 
+eth0      Link encap:Ethernet  HWaddr 02:42:AC:11:00:02  
+          inet addr:172.17.0.2  Bcast:172.17.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:13 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:1030 (1.0 KiB)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:918 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:918 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:77112 (75.3 KiB)  TX bytes:77112 (75.3 KiB)
+
+/ # exit
+
+```
+### to check all the process running in a container 
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  top  ashuc1
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                13999               13957               0                   08:55               ?                   00:00:00            ping localhost
+
+```
+
+
