@@ -276,4 +276,112 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
  
 ```
 
+## Docker image build process
+
+<img src="build.png">
+
+### dockerfile explanation 
+
+<img src="file.png">
+
+### building docker images
+
+```
+[ashu@ip-172-31-9-158 myimages]$ docker  build -t  ashupyhon:v1  ./pythonapp  
+Sending build context to Docker daemon  3.584kB
+Step 1/6 : FROM  oraclelinux:8.4
+8.4: Pulling from library/oraclelinux
+560ca3a48139: Pull complete 
+Digest: sha256:bf974de16aed323b73de50c333885e453c9f9009c0fb8bef9418d8cabc9ab155
+Status: Downloaded newer image for oraclelinux:8.4
+ ---> 6c0485cb8463
+Step 2/6 : LABEL  email="ashutoshh@linux.com"
+ ---> Running in 1f6f0f7499ba
+Removing intermediate container 1f6f0f7499ba
+ ---> 209e8093ea86
+Step 3/6 : RUN  dnf  install python3 -y
+ ---> Running in 24ecb739850c
+Oracle Linux 8 BaseOS Latest (x86_64)            67 MB/s |  38 MB     00:00    
+Oracle Linux 8 Application Stream (x86_64)       75 MB/s |  26 MB     00:00    
+Last metadata expiration check: 0:00:07 ago on Mon Aug  9 10:21:16 2021.
+Dependencies resolved.
+=================================================================================================
+ Package               Arch    Version                                   Repository          Size
+=================================================================================================
+Installing:
+ python36              x86_64  3.6.8-2.0.1.module+el8.4.0+20103+1849b5f9 ol8_appstream       19 k
+Installing dependencies:
+ platform-python-pip   noarch  9.0.3-19.el8                              ol8_baseos_latest  1.7 M
+ python3-pip           noarch  9.0.3-19.el8                              ol8_appstream       20 k
+ python3-setuptools    noarch  39.2.0-6.el8                              ol8_baseos_latest  163 k
+Enabling module streams:
+ python36                      3.6                                                               
+
+Transaction Summary
+=================================================================================================
+Install  4 Packages
+
+Total download size: 1.9 M
+Installed size: 7.6 M
+Downloading Packages:
+(1/4): python3-pip-9.0.3-19.el8.noarch.rpm      442 kB/s |  20 kB     00:00    
+(2/4): platform-python-pip-9.0.3-19.el8.noarch.  29 MB/s | 1.7 MB     00:00    
+(3/4): python36-3.6.8-2.0.1.module+el8.4.0+2010 1.4 MB/s |  19 kB     00:00    
+(4/4): python3-setuptools-39.2.0-6.el8.noarch.r 637 kB/s | 163 kB     00:00    
+--------------------------------------------------------------------------------
+Total                                           7.2 MB/s | 1.9 MB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                        1/1 
+  Installing       : python3-setuptools-39.2.0-6.el8.noarch                 1/4 
+  Installing       : platform-python-pip-9.0.3-19.el8.noarch                2/4 
+  Installing       : python36-3.6.8-2.0.1.module+el8.4.0+20103+1849b5f9.x   3/4 
+  Running scriptlet: python36-3.6.8-2.0.1.module+el8.4.0+20103+1849b5f9.x   3/4 
+  Installing       : python3-pip-9.0.3-19.el8.noarch                        4/4 
+  Running scriptlet: python3-pip-9.0.3-19.el8.noarch                        4/4 
+  Verifying        : platform-python-pip-9.0.3-19.el8.noarch                1/4 
+  Verifying        : python3-setuptools-39.2.0-6.el8.noarch                 2/4 
+  Verifying        : python3-pip-9.0.3-19.el8.noarch                        3/4 
+  Verifying        : python36-3.6.8-2.0.1.module+el8.4.0+20103+1849b5f9.x   4/4 
+
+Installed:
+  platform-python-pip-9.0.3-19.el8.noarch                                       
+  python3-pip-9.0.3-19.el8.noarch                                               
+  python3-setuptools-39.2.0-6.el8.noarch                                        
+  python36-3.6.8-2.0.1.module+el8.4.0+20103+1849b5f9.x86_64                     
+
+Complete!
+Removing intermediate container 24ecb739850c
+ ---> 7612373d9674
+Step 4/6 : RUN  mkdir  /mycode
+ ---> Running in ecdb820919c7
+Removing intermediate container ecdb820919c7
+ ---> c5776b1cddc5
+Step 5/6 : COPY  oracle.py  /mycode/oracle.py
+ ---> 030ba21af8eb
+Step 6/6 : CMD  ["python3","/mycode/oracle.py"]
+ ---> Running in 19b167d4e217
+Removing intermediate container 19b167d4e217
+ ---> 4edcbc4ed676
+Successfully built 4edcbc4ed676
+Successfully tagged ashupyhon:v1
+
+```
+
+### creating container 
+
+```
+[ashu@ip-172-31-9-158 myimages]$ docker  run  -itd  --name ashuc2  ashupyhon:v1  
+773d4449e15ab67358e66ece4c692837b691faf7720dbdf43cee31d52b6399cd
+[ashu@ip-172-31-9-158 myimages]$ docker  ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS          PORTS     NAMES
+c6691103d32b   madhvipython:v1   "python3 /mycode/ora…"   5 seconds ago    Up 3 seconds              madhvic3
+773d4449e15a   ashupyhon:v1      "python3 /mycode/ora…"   8 seconds ago    Up 6 seconds              ashuc2
+243df2ca6b0b   rajpythonapp:v1   "python3 /mycode/ora…"   16 seconds ago   Up 14 seconds             RajPythonApp
+
+```
+
 
