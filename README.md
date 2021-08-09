@@ -88,5 +88,56 @@ Server:
   
 ```
 
+## docker arch 
 
+<img src="darch.png">
+
+## registry options 
+
+<img src="reg.png">
+
+## Docker operations 
+
+### search 
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  search   java 
+NAME                                     DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+node                                     Node.js is a JavaScript-based platform for s…   10368     [OK]       
+tomcat                                   Apache Tomcat is an open source implementati…   3089      [OK]       
+openjdk                                  OpenJDK is an open-source implementation of …   2867      [OK]       
+java                                     Java is a concurrent, class-based, and objec…   1976      [OK]       
+ghost                                    Ghost is a free and open source blogging pla…   1398      [OK]       
+couchdb                                  CouchDB is a database that uses JSON for doc…   430       [OK]       
+jetty                                    Jetty provides a Web server and javax.servle…   369       [OK]       
+groovy                                   Apache Groovy is a multi-faceted language fo…   113       [OK]       
+lwieske/java-8                           Oracle
+
+```
+
+### pulling images
+
+```
+ 9  docker  pull  mysql
+   10  docker  pull   oraclelinux:8.3 
+   11  history 
+[ashu@ip-172-31-9-158 ~]$ docker  images
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+mysql         latest    c60d96bd2b77   2 weeks ago    514MB
+oraclelinux   8.3       816d99f0bbe8   3 months ago   224MB
+
+```
+
+### all pulled images
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  images
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+alpine        latest    021b3423115f   2 days ago     5.6MB
+nginx         latest    08b152afcfae   2 weeks ago    133MB
+mysql         latest    c60d96bd2b77   2 weeks ago    514MB
+busybox       latest    69593048aa3a   2 months ago   1.24MB
+oraclelinux   8.3       816d99f0bbe8   3 months ago   224MB
+
+```
 
