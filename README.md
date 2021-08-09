@@ -235,4 +235,45 @@ root                13999               13957               0                   
 
 ```
 
+### stopping all running containers
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  kill  $(docker  ps -q)
+bc7d9dde787b
+d6a1e647f43b
+00b3af9df8f7
+4e55677e3d87
+22cc9ea37c10
+d80bb9501835
+0e25de32b553
+a06681663948
+a3e596f3c51b
+44ff6067f5ad
+f9663da6e421
+05864e91023f
+a3ff9fec69ac
+906bce3ccff4
+87978d631fd2
+fa13f65d88e6
+d3f4a3140887
+6f2c9c68333c
+75594a63f6ce
+9551f8989817
+9de41e467f39
+ca1d91898cd8
+c9bbf7d8cadd
+[ashu@ip-172-31-9-158 ~]$ docker  ps 
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[ashu@ip-172-31-9-158 ~]$ 
+
+
+```
+
+### remove all stopped containers
+
+```
+ docker  rm  $(docker  ps -aq) 
+ 
+```
+
 
