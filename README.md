@@ -386,4 +386,61 @@ v1: digest: sha256:1b3350bcea0b9a5451b2883ca2d4c469f70ed6d4d76ea83b41b3dbcbc2805
 Removing login credentials for https://index.docker.io/v1/
 ```
 
+### Remove image 
+
+```
+ashu@ip-172-31-9-158 myimages]$ docker  rmi   d23bdf5b1b1b  
+Untagged: java:latest
+Untagged: java@sha256:c1ff613e8ba25833d2e1940da0940c3824f03f802c449f3d1815a66b7f8c0e9d
+Deleted: sha256:d23bdf5b1b1b1afce5f1d0fd33e7ed8afbc084b594b9ccf742a5b27080d8a4a8
+Deleted: sha256:0132aeca1bc9ac49d397635d34675915693a8727b103639ddee3cc5438e0f60a
+Deleted: sha256:c011315277e16e6c88687a6c683e388e287
+
+```
+
+### docker images remove all 
+
+```
+ docker  rmi   $(docker  images -q)  -f
+```
+
+
+## Docker Networking 
+
+### topology in on prim and docker host as well
+
+<img src="dnet.png">
+
+## checking container IP 
+
+```
+ashu@ip-172-31-9-158 myimages]$ docker  inspect  ashuc1 --format='{{.NetworkSettings.IPAddress}}'
+172.17.0.2
+[ashu@ip-172-31-9-158 myimages]$ docker  ps
+CONTAINER ID   IMAGE             COMMAND             CREATED              STATUS              PORTS     NAMES
+5ad4f11214c3   alpine            "ping fb.com"       43 seconds ago       Up 42 seconds                 shailendrac1
+7672f433ad20   alpine            "ping google.com"   53 seconds ago       Up 52 seconds                 prasantac1
+e343e7dd6e65   alpine            "ping localhost"    About a minute ago   Up About a minute             shwetabhc1
+efc1fe1cfc93   oraclelinux:8.3   "ping localhost"    About a minute ago   Up About a minute             madhvic1
+e930ba875d66   alpine            "ping localhost"    About a minute ago   Up About a minute             shreya1
+749dd7bf8ea8   centos            "ping localhost"    2 minutes ago        Up 2 minutes                  arjunc1
+b111048d21cb   alpine            "ping fb.com"       3 minutes ago        Up 3 minutes                  riyanu
+e08662288d4a   alpine            "ping fb.com"       3 minutes ago        Up 3 minutes                  sivanw
+305a33cfa89f   oraclelinux:8.4   "ping localhost"    3 minutes ago        Up 3 minutes                  ishitac1
+16a2ee00f6ba   alpine            "ping fb.com"       3 minutes ago        Up 3 minutes                  ashuc1
+[ashu@ip-172-31-9-158 myimages]$ docker  inspect shailendrac1 --format='{{.NetworkSettings.IPAddress}}'
+172.17.0.11
+
+```
+
+### each container can connect to outside if Host can do the same 
+
+### NAT  -- network address translation 
+
+<img src="nat.png">
+
+### Nat ---
+
+<img src="nat2.png">
+
 
