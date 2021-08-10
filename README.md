@@ -1,1 +1,5 @@
-# check day1 to day5 branches for content 
+#  Namespace and cgroups 
+
+<img src="cg.png">
+
+
