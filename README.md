@@ -185,6 +185,205 @@ Oracle Linux 8 BaseOS Latest (x86_64)            53 MB/s |  38 MB     00:00
 
 ```
 
+## web application containerization 
 
+### web servers
+
+<img src="webs.png">
+
+### nginx web server 
+
+<img src="ng.png">
+
+### Cloing web app
+
+```
+[ashu@ip-172-31-9-158 myimages]$ git clone  https://github.com/mdn/beginner-html-site-styled
+Cloning into 'beginner-html-site-styled'...
+remote: Enumerating objects: 40, done.
+remote: Total 40 (delta 0), reused 0 (delta 0), pack-reused 40
+Receiving objects: 100% (40/40), 124.07 KiB | 41.35 MiB/s, done.
+Resolving deltas: 100% (10/10), done.
+[ashu@ip-172-31-9-158 myimages]$ ls
+beginner-html-site-styled  javaapp  pythonapp
+
+```
+
+### building it 
+
+```
+[ashu@ip-172-31-9-158 beginner-html-site-styled]$ docker  build -t ashunginx:v1 . 
+Sending build context to Docker daemon  63.49kB
+Step 1/4 : FROM nginx
+ ---> 08b152afcfae
+Step 2/4 : LABEL name=ashutoshh
+ ---> Running in e55053321865
+Removing intermediate container e55053321865
+ ---> d2777e760f88
+Step 3/4 : WORKDIR /usr/share/nginx/html/
+ ---> Running in 17cf3c24d3f9
+Removing intermediate container 17cf3c24d3f9
+ ---> 8cfb0f016bfe
+Step 4/4 : COPY  .  .
+ ---> c720ce3d08d3
+Successfully built c720ce3d08d3
+Successfully tagged ashunginx:v1
+
+```
+
+### same web app with httpd web server dockerfile 
+
+```
+ashu@ip-172-31-9-158 beginner-html-site-styled]$ ls
+CODE_OF_CONDUCT.md  Dockerfile  httpd.dockerfile  images  index.html  LICENSE  README.md  styles
+[ashu@ip-172-31-9-158 beginner-html-site-styled]$ docker  build  -t  ashuhttpd:v1 -f httpd.dockerfile  . Sending build context to Docker daemon  63.49kB
+Step 1/5 : FROM oraclelinux:8.4
+ ---> 6c0485cb8463
+Step 2/5 : RUN dnf install httpd -y
+ ---> Running in b8f16d71987f
+Oracle Linux 8 BaseOS Latest (x86_64)            69 MB/s |  38 MB     00:00    
+Oracle Linux 8 Application Stream (x86_64)       26 MB/s |  26 MB     00:01    
+Last metadata expiration check: 0:00:07 ago on Tue Aug 10 08:47:16 2021.
+Dependencies resolved.
+==================================================================================================
+ Package              Arch    Version                                     Repository          Size
+==================================================================================================
+Installing:
+ httpd                x86_64  2.4.37-39.0.1.module+el8.4.0+20024+b87b2deb ol8_appstream      1.4 M
+Installing dependencies:
+ apr                  x86_64  1.6.3-11.el8                                ol8_appstream      125 k
+ apr-util             x86_64  1.6.1-6.el8                                 ol8_appstream      105 k
+ httpd-filesystem     noarch  2.4.37-39.0.1.module+el8.4.0+20024+b87b2deb ol8_appstream       39 k
+ httpd-tools          x86_64  2.4.37-39.0.1.module+el8.4.0+20024+b87b2deb ol8_appstream      106 k
+ mailcap              noarch  2.1.48-3.el8                                ol8_baseos_latest   39 k
+ mod_http2            x86_64  1.15.7-3.module+el8.4.0+20024+b87b2deb      ol8_appstream      154 k
+ oracle-logos-httpd   noarch  84.3-1.0.1.el8                              ol8_baseos_latest   29 k
+Enabling module streams:
+ httpd                        2.4                                                                 
+
+Transaction Summary
+==================================================================================================
+Install  8 Packages
+
+Total download size: 2.0 M
+Installed size: 5.4 M
+Downloading Packages:
+(1/8): oracle-logos-httpd-84.3-1.0.1.el8.noarch 567 kB/s |  29 kB     00:00    
+(2/8): apr-util-1.6.1-6.el8.x86_64.rpm          3.5 MB/s | 105 kB     00:00    
+(3/8): apr-1.6.3-11.el8.x86_64.rpm              1.5 MB/s | 125 kB     00:00    
+(4/8): httpd-filesystem-2.4.37-39.0.1.module+el 2.2 MB/s |  39 kB     00:00    
+(5/8): httpd-tools-2.4.37-39.0.1.module+el8.4.0 6.2 MB/s | 106 kB     00:00    
+(6/8): httpd-2.4.37-39.0.1.module+el8.4.0+20024  26 MB/s | 1.4 MB     00:00    
+(7/8): mod_http2-1.15.7-3.module+el8.4.0+20024+ 7.8 MB/s | 154 kB     00:00    
+(8/8): mailcap-2.1.48-3.el8.noarch.rpm           14 kB/s |  39 kB     00:02    
+--------------------------------------------------------------------------------
+Total                                           712 kB/s | 2.0 MB     00:02     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                        1/1 
+  Installing       : apr-1.6.3-11.el8.x86_64                                1/8 
+  Running scriptlet: apr-1.6.3-11.el8.x86_64                                1/8 
+  Installing       : apr-util-1.6.1-6.el8.x86_64                            2/8 
+  Running scriptlet: apr-util-1.6.1-6.el8.x86_64                            2/8 
+  Installing       : httpd-tools-2.4.37-39.0.1.module+el8.4.0+20024+b87b2   3/8 
+  Running scriptlet: httpd-filesystem-2.4.37-39.0.1.module+el8.4.0+20024+   4/8 
+  Installing       : httpd-filesystem-2.4.37-39.0.1.module+el8.4.0+20024+   4/8 
+  Installing       : oracle-logos-httpd-84.3-1.0.1.el8.noarch               5/8 
+  Installing       : mailcap-2.1.48-3.el8.noarch                            6/8 
+  Installing       : mod_http2-1.15.7-3.module+el8.4.0+20024+b87b2deb.x86   7/8 
+  Installing       : httpd-2.4.37-39.0.1.module+el8.4.0+20024+b87b2deb.x8   8/8 
+  Running scriptlet: httpd-2.4.37-39.0.1.module+el8.4.0+20024+b87b2deb.x8   8/8 
+  Verifying        : mailcap-2.1.48-3.el8.noarch                            1/8 
+  Verifying        : oracle-logos-httpd-84.3-1.0.1.el8.noarch               2/8 
+  Verifying        : apr-1.6.3-11.el8.x86_64                                3/8 
+  Verifying        : apr-util-1.6.1-6.el8.x86_64                            4/8 
+  Verifying        : httpd-2.4.37-39.0.1.module+el8.4.0+20024+b87b2deb.x8   5/8 
+  Verifying        : httpd-filesystem-2.4.37-39.0.1.module+el8.4.0+20024+   6/8 
+  Verifying        : httpd-tools-2.4.37-39.0.1.module+el8.4.0+20024+b87b2   7/8 
+  Verifying        : mod_http2-1.15.7-3.module+el8.4.0+20024+b87b2deb.x86   8/8 
+
+Installed:
+  apr-1.6.3-11.el8.x86_64                                                       
+  apr-util-1.6.1-6.el8.x86_64                                                   
+  httpd-2.4.37-39.0.1.module+el8.4.0+20024+b87b2deb.x86_64                      
+  httpd-filesystem-2.4.37-39.0.1.module+el8.4.0+20024+b87b2deb.noarch           
+  httpd-tools-2.4.37-39.0.1.module+el8.4.0+20024+b87b2deb.x86_64                
+  mailcap-2.1.48-3.el8.noarch                                                   
+  mod_http2-1.15.7-3.module+el8.4.0+20024+b87b2deb.x86_64                       
+  oracle-logos-httpd-84.3-1.0.1.el8.noarch                                      
+
+Complete!
+Removing intermediate container b8f16d71987f
+ ---> 15092cbfdddf
+Step 3/5 : WORKDIR /var/www/html/
+ ---> Running in 8ee0c96839dc
+Removing intermediate container 8ee0c96839dc
+ ---> 1083bf11de30
+Step 4/5 : ADD . .
+ ---> 0af50c421490
+Step 5/5 : ENTRYPOINT httpd -DFOREGROUND
+ ---> Running in 69271f41c86d
+Removing intermediate container 69271f41c86d
+ ---> cff0dc1ed1a0
+Successfully built cff0dc1ed1a0
+Successfully tagged ashuhttpd:v1
+
+```
+
+## Image sharing concept 
+
+<img src="imgshare.png">
+
+## registry options 
+
+<img src="reg.png">
+
+## docker image name reality 
+
+<img src="imgname.png">
+
+## pushing docker image 
+
+### tag
+
+```
+docker  tag  ashuhttpd:v1  dockerashu/ashuhttpd:v1 
+
+```
+
+### login 
+
+```
+[ashu@ip-172-31-9-158 myimages]$ docker  login -u  dockerashu 
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ashu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+```
+
+
+### pushing 
+```
+[ashu@ip-172-31-9-158 myimages]$ docker push  dockerashu/ashuhttpd:v1
+The push refers to repository [docker.io/dockerashu/ashuhttpd]
+b6049c54d6fb: Pushed 
+2a389ed29340: Pushed 
+f881259a17a3: Mounted from library/oraclelinux 
+v1: digest: sha256:1b3350bcea0b9a5451b2883ca2d4c469f70ed6d4d76ea83b41b3dbcbc280531d size: 951
+
+```
+
+### logout 
+
+```
+[ashu@ip-172-31-9-158 myimages]$ docker logout 
+Removing login credentials for https://index.docker.io/v1/
+```
 
 
