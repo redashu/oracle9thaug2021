@@ -444,3 +444,182 @@ e08662288d4a   alpine            "ping fb.com"       3 minutes ago        Up 3 m
 <img src="nat2.png">
 
 
+### port forwarding 
+
+<img src="portf.png">
+
+### CNM -- docker0 is not recommended 
+
+<img src="d0.png">
+
+### checking default bridge 
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  network   ls
+NETWORK ID     NAME      DRIVER    SCOPE
+9290ed712fb2   bridge    bridge    local
+d87275337e54   host      host      local
+4ea86dcdaf72   none      null      local
+[ashu@ip-172-31-9-158 ~]$ 
+[ashu@ip-172-31-9-158 ~]$ 
+[ashu@ip-172-31-9-158 ~]$ docker  network    inspect  9290ed712fb2 
+[
+    {
+        "Name": "bridge",
+        "Id": "9290ed712fb251c2c2f31d5c3b59d955f11066598a637d36c982a948710cc6ca",
+        "Created": "2021-08-10T04:44:08.686923252Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "16a2ee00f6baace9710455530c62a4e3981a9f9a5cb55a1776f3bab53d0af54b": {
+                "Name": "ashuc1",
+                "EndpointID": "4f4228f40cf6ee131705e9d21e33b25416bbe50853a7062bc67092257a93599b",
+                "MacAddress": "02:42:ac:11:00:02",
+                "IPv4Address": "172.17.0.2/16",
+                "IPv6Address": ""
+            },
+            "305a33cfa89f0a9ea674377e1599fb12b8c529164c04a6f0d81a2dbad6c1e11b": {
+                "Name": "ishitac1",
+                "EndpointID": "659d7ba220f42a397b91ca79b480c4579f8bc7bc8164f0105eab402fef09445a",
+                "MacAddress": "02:42:ac:11:00:03",
+                "IPv4Address": "172.17.0.3/16",
+                "IPv6Address": ""
+            },
+            "44837795917be005baa89a72158bdca7317921e8b2fda1964aa58de17ed72b05": {
+                "Name": "shwetabhx1",
+                "EndpointID": "3edd52dd5d010eaeb40c28dbdc51c9b40d84a90466be41accd912a442e41a876",
+                "MacAddress": "02:42:ac:11:00:0e",
+                "IPv4Address": "172.17.0.14/16",
+                "IPv6Address": ""
+            },
+            "587914f4c0013ed8867919decda8c737afdc662e5acfad697b6a7e7009aa37e1": {
+                "Name": "nginxpf",
+                "EndpointID": "c60e49ea1307fd83ab37f9c1c7ab8e97b288839dea5ab29974e44cf9b0354a3b",
+                "MacAddress": "02:42:ac:11:00:0d",
+                "IPv4Address": "172.17.0.13/16",
+                "IPv6Address": ""
+            },
+            "5ad4f11214c3c56e6f744173736d7f358cbba99882b16596675e320fb78eda46": {
+                "Name": "shailendrac1",
+                "EndpointID": "22716d3d0f372c938abb773637b26611ace9ef472a020371af7260e4b7d5c7a9",
+                "MacAddress": "02:42:ac:11:00:0b",
+                "IPv4Address": "172.17.0.11/16",
+                "IPv6Address": ""
+            },
+            "749dd7bf8ea864a503777f810995408ef29ebb7b855d7f51727f4e89707d08a7": {
+                "Name": "arjunc1",
+                "EndpointID": "de12c61628320a83302144bc3c97cac9dd00ae6f10c6909aabd981e94c826943",
+                "MacAddress": "02:42:ac:11:00:06",
+                "IPv4Address": "172.17.0.6/16",
+                "IPv6Address": ""
+            },
+            "7672f433ad20a56a02ea6939d730f53d00e86be30c914afc121b1723fb0252ed": {
+                "Name": "prasantac1",
+                "EndpointID": "71c00843ada2b01ddc6c61c69e75036915d2d8fe0b1e2e620d8e5220b41c4f85",
+                "MacAddress": "02:42:ac:11:00:0a",
+                "IPv4Address": "172.17.0.10/16",
+                "IPv6Address": ""
+                
+                
+                
+   ```
+   
+   ### None Bridge
+   
+   ```
+   4ea86dcdaf72   none      null      local
+[ashu@ip-172-31-9-158 ~]$ docker  run -it --rm  --network  none  alpine  sh  
+/ # 
+/ # 
+/ # 
+/ # ifconfig 
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+/ # ping  172.17.0.1
+PING 172.17.0.1 (172.17.0.1): 56 data bytes
+ping: sendto: Network unreachable
+/ # ping google.com 
+ping: bad address 'google.com'
+/ # exit
+
+```
+
+### creating custom bridge
+
+```
+[ashu@ip-172-31-9-158 ~]$ docker  network  create  ashubr1
+2bdad2901d8b636caf9895e0cc66b3628d1c8cd67b59a37663251c6a48b559c2
+[ashu@ip-172-31-9-158 ~]$ docker  network  ls
+NETWORK ID     NAME      DRIVER    SCOPE
+2bdad2901d8b   ashubr1   bridge    local
+9290ed712fb2   bridge    bridge    local
+d87275337e54   host      host      local
+4ea86dcdaf72   none      null      local
+[ashu@ip-172-31-9-158 ~]$ docker  network  inspect  ashubr1
+[
+    {
+        "Name": "ashubr1",
+        "Id": "2bdad2901d8b636caf9895e0cc66b3628d1c8cd67b59a37663251c6a48b559c2",
+        "Created": "2021-08-10T11:25:28.065606482Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+                
+                
+  ```
+  
+  
+  ### COntainer with network option 
+  
+  ```
+  [ashu@ip-172-31-9-158 ~]$ docker  run -itd --name ashubrc1  --network ashubr1  alpine ping localhost 
+23f174e00cfd3a1ee829722f4832c70f0e8ca1210a1a61fa4545b3c92acfbc47
+[ashu@ip-172-31-9-158 ~]$ 
+[ashu@ip-172-31-9-158 ~]$ 
+[ashu@ip-172-31-9-158 ~]$ docker  run -itd --name ashubrc2  --network ashubr1  alpine ping localhost 
+221e44715998aebb81a0c89e3cc84fe9a5f2fd185fa52188858cee0ddd1cc79f
+[ashu@ip-172-31-9-158 ~]$ docker  exec -it  ashubrc1 sh 
+/ # ping ashubrc2
+PING ashubrc2 (172.18.0.3): 56 data bytes
+64 bytes from 172.18.0.3: seq=0 ttl=255 time=0.112 ms
+64 bytes from 172.18.0.3: seq=1 ttl=255 time=0.083 ms
+64 bytes from 172.18.0.3: seq=2 ttl=255 time=0.080 ms
+^C
+--- ashubrc2 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.080/0.091/0.112 ms
+
+```
+
