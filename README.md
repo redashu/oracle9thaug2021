@@ -396,3 +396,76 @@ commit: a03fbcf166e6f74ef224d4a63be4277d017bb62e
 
 ```
    
+### k8s client version 
+
+```
+
+ kubectl  version --client
+Client Version: version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.1", GitCommit:"5e58841cce77d4bc13713ad2b91fa0d961e69192", GitTreeState:"clean", BuildDate:"2021-05-12T14:18:45Z", GoVersion:"go1.16.4", Compiler:"gc", Platform:"darwin/amd64"}
+
+```
+
+### COnnection to k8s client 
+
+```
+❯ cd  Desktop
+❯ kubectl  get  nodes  --kubeconfig  admin.conf
+NAME        STATUS   ROLES                  AGE   VERSION
+k8smaster   Ready    control-plane,master   32m   v1.22.0
+minion1     Ready    <none>                 32m   v1.22.0
+minion2     Ready    <none>                 31m   v1.22.0
+❯ 
+❯ kubectl  get  nodes
+NAME       STATUS   ROLES                  AGE   VERSION
+minikube   Ready    control-plane,master   53m   v1.21.2
+❯ 
+❯ kubectl  get  nodes  --kubeconfig  admin.conf
+NAME        STATUS   ROLES                  AGE   VERSION
+k8smaster   Ready    control-plane,master   32m   v1.22.0
+minion1     Ready    <none>                 32m   v1.22.0
+minion2     Ready    <none>                 32m   v1.22.0
+
+```
+
+## admin.confg in right location 
+
+<img src="admin.png">
+
+## switching context 
+
+```
+❯ kubectl  config  get-contexts
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+          minikube                      minikube     minikube           default
+❯ kubectl  config use-context minikube
+Switched to context "minikube".
+❯ kubectl  config  get-contexts
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+          kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+*         minikube                      minikube     minikube           default
+❯ kubectl  get  nodes
+NAME       STATUS   ROLES                  AGE   VERSION
+minikube   Ready    control-plane,master   72m   v1.21.2
+❯ kubectl  config use-context kubernetes-admin@kubernetes
+Switched to context "kubernetes-admin@kubernetes".
+❯ kubectl  get  nodes
+NAME        STATUS   ROLES                  AGE   VERSION
+k8smaster   Ready    control-plane,master   52m   v1.22.0
+minion1     Ready    <none>                 52m   v1.22.0
+minion2     Ready    <none>                 52m   v1.22.0
+
+```
+
+
+## ETCD 
+
+<img src="etcd.png">
+
+###  Intro to Pod 
+
+<img src="pod.png">
+
+
+
+
