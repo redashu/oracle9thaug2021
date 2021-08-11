@@ -324,5 +324,75 @@ Removing network ashucompose1_default
   
   ```
   
+  ## PRoblems with Docker  Engine 
   
+  <img src="deprob.png">
+  
+  ## COntainer orchestration 
+  
+  <img src="carch.png">
+  
+  ## k8s info 
+  
+  
+<img src="k8s.png">
 
+
+## Understanding k8s arch 
+
+###  L1 
+
+<img src="k8sl1.png">
+
+### L2
+
+<img src="k8sl2.png">
+
+### Kube-apiserver in k8s master node
+
+<img src="k8sm.png">
+
+### Installation method for k8s
+
+<img src="method.png">
+
+### Minikube 
+
+<img src="minkube.png">
+### Installing kinikube 
+
+```
+❯ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 65.9M  100 65.9M    0     0  5532k      0  0:00:12  0:00:12 --:--:-- 5708k
+❯ sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+
+Password:
+❯ minikube version
+minikube version: v1.22.0
+commit: a03fbcf166e6f74ef224d4a63be4277d017bb62e
+
+```
+
+### Installing Minikube based k8s 
+
+```
+
+ minikube  start  --driver=docker
+😄  minikube v1.22.0 on Darwin 11.4
+✨  Using the docker driver based on user configuration
+👍  Starting control plane node minikube in cluster minikube
+🚜  Pulling base image ...
+🔥  Creating docker container (CPUs=2, Memory=1988MB) ...
+🐳  Preparing Kubernetes v1.21.2 on Docker 20.10.7 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+
+```
+   
