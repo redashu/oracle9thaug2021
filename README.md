@@ -239,5 +239,66 @@ d87275337e54   host      host      local
 
 <img src="compose.png">
 
+### Installing docker-compose in client side 
+
+```
+[ec2-user@ip-172-31-9-158 ~]$ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)
+-$(uname -m)" -o /usr/local/bin/docker-compose
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   633  100   633    0     0   5552      0 --:--:-- --:--:-- --:--:--  5552
+100 12.1M  100 12.1M    0     0  44.0M      0 --:--:-- --:--:-- --:--:-- 44.0M
+[ec2-user@ip-172-31-9-158 ~]$ sudo chmod +x /usr/local/bin/docker-compose
+[ec2-user@ip-172-31-9-158 ~]$ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+[ec2-user@ip-172-31-9-158 ~]$ docker-compose  -v
+docker-compose version 1.29.2, build 5becea4c
+
+```
+
+## COmpose installation URL 
+
+[compose](https://docs.docker.com/compose/install/)
+
+### example 1 
+
+```
+ashu@ip-172-31-9-158 myimages]$ cd  ashucompose1/
+[ashu@ip-172-31-9-158 ashucompose1]$ ls
+docker-compose.yaml
+[ashu@ip-172-31-9-158 ashucompose1]$ docker-compose up  -d
+Creating network "ashucompose1_default" with the default driver
+Creating ashungc1 ... done
+Creating ashuc1   ... done
+
+```
+
+### compose commands 
+
+```
+[ashu@ip-172-31-9-158 ashucompose1]$ docker-compose  ps
+  Name                Command               State          Ports        
+------------------------------------------------------------------------
+ashuc1     ping localhost                   Up                          
+ashungc1   /docker-entrypoint.sh ngin ...   Up      0.0.0.0:1133->80/tcp
+
+```
+
+### down 
+
+```
+[ashu@ip-172-31-9-158 ashucompose1]$ docker-compose  images
+Container   Repository    Tag       Image Id       Size  
+---------------------------------------------------------
+ashuc1      alpine       latest   021b3423115f   5.595 MB
+ashungc1    nginx        latest   08b152afcfae   133.2 MB
+[ashu@ip-172-31-9-158 ashucompose1]$ docker-compose down 
+Stopping ashungc1 ... done
+Stopping ashuc1   ... done
+Removing ashungc1 ... done
+Removing ashuc1   ... done
+Removing network ashucompose1_default
+
+```
+
 
 
