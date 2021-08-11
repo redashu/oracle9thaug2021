@@ -300,5 +300,29 @@ Removing network ashucompose1_default
 
 ```
 
+### compose commands 
 
+```
+ 483  ls
+  484  docker-compose  images
+  485  docker-compose down 
+  486  docker-compose up  -d
+  487  docker-compose down 
+  488  history 
+  489  docker images
+  490  docker-compose ps
+  491  docker-compose  images
+  492  docker  images
+  493  docker-compose  up -d
+  494  docker-compose  images
+  495  docker-compose  down
+  496  docker-compose  up -d
+  497  docker-compose  images
+  498  docker-compose  kill
+  499  docker-compose  images
+  500  docker-compose down 
+  
+  ```
+  
+  
 
