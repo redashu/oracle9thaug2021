@@ -216,5 +216,28 @@ docker  run -itd --name ashungc1  -v  /home/ashu/myimages/beginner-html-site-sty
 ```
 
 
+### cleaning up DE data 
+
+```
+ 447  docker  rm  $(docker ps -aq) -f
+  448  docker  volume  rm $(docker volume ls -q) -f
+  449  docker  network prune 
+  450  history 
+[ashu@ip-172-31-9-158 myimages]$ docker  volume  ls
+DRIVER    VOLUME NAME
+[ashu@ip-172-31-9-158 myimages]$ docker  ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[ashu@ip-172-31-9-158 myimages]$ docker  network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+c71bfa2cc77d   bridge    bridge    local
+d87275337e54   host      host      local
+4ea86dcdaf72   none      null      local
+
+```
+
+## Introduction to Docker compose 
+
+<img src="compose.png">
+
 
 
