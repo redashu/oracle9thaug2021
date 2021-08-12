@@ -253,6 +253,58 @@ status:
 
 <img src="npd.png">
 
+###  deleting pods 
 
+```
+❯ kubectl delete  pod --all
+pod "arjunpod" deleted
+pod "arjunpod2" deleted
+pod "ashupod2" deleted
+pod "ishita-123" deleted
+pod "ishitapod2" deleted
+pod "prasanta-123" deleted
+pod "praspod2" deleted
+
+```
+
+### deleting all svc 
+
+```
+ kubectl delete svc   --all
+service "arjunsvc1" deleted
+service "ashusvc1" deleted
+service "ishitas1" deleted
+service "kubernetes" deleted
+service "prasantasvc2" deleted
+service "riyanuservice1" deleted
+service "shailsvc2" deleted
+service "shreyasvc1" deleted
+
+```
+
+### Intro to multi stage dockerfile
+
+<img src="mst.png">
+
+### build java sprint 
+
+```
+ git clone https://github.com/redashu/java-springboot
+  504  ls
+  505  cd  java-springboot/
+  506  ls
+  507  docker  build -t   javawebapp:12thaugv1 . 
+  508  history 
+  509  doker  imags
+  510  docker  images
+  511  docker   tag  17f363b89481  dockerashu/javawebapp:12thaugv1 
+  512  docker  login -u dockerashu
+  513  docker push  dockerashu/javawebapp:12thaugv1  
+  514  history 
+  515  docker  logout 
+  
+ ```
+ 
+ 
 
 
