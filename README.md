@@ -305,6 +305,212 @@ service "shreyasvc1" deleted
   
  ```
  
+ ## creating java pod 
  
+ ```
+  kubectl  run   ashujavapod  --image=dockerashu/javawebapp:12thaugv1  --port 8080 --dry-run=client -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashujavapod
+  name: ashujavapod
+spec:
+  containers:
+  - image: dockerashu/javawebapp:12thaugv1
+    name: ashujavapod
+    ports:
+    - containerPort: 8080
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+❯ kubectl  run   ashujavapod  --image=dockerashu/javawebapp:12thaugv1  --port 8080 --dry-run=client -o yaml   >javaweb.yml
+
+```
+
+### creating svc for same pod 
+
+```
+ kubectl  create   service nodeport  ashujavasvc --tcp 1234:8080  --dry-run=client -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashujavasvc
+  name: ashujavasvc
+spec:
+  ports:
+  - name: 1234-8080
+    port: 1234
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: ashujavasvc
+  type: NodePort
+status:
+  loadBalancer: {}
+
+```
+
+### deploy pod 
+
+```
+❯ kubectl  apply -f  javaweb.yml
+pod/ashujavapod created
+service/ashujavasvc created
+❯ kubectl  get  po
+NAME          READY   STATUS              RESTARTS   AGE
+ashujavapod   0/1     ContainerCreating   0          7s
+❯ kubectl  get  svc
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+ashujavasvc   NodePort    10.99.164.22   <none>        1234:30560/TCP   9s
+kubernetes    ClusterIP   10.96.0.1      <none>        443/TCP          26s
+❯ kubectl  get  po
+NAME          READY   STATUS    RESTARTS   AGE
+ashujavapod   1/1     Running   0          21s
+
+
+```
+
+## Node COntroller 
+
+<img src="nc.png">
+
+##  RC -- 
+
+<img src="rc.png">
+
+
+### clean up 
+
+```
+❯ kubectl  delete  all --all
+pod "arjunpod2" deleted
+pod "ashujavapod" deleted
+pod "ishitajavapod" deleted
+pod "prasantajavapod2" deleted
+pod "rajsprintboot" deleted
+pod "shailendrajavaweb" deleted
+pod "shreyajavapod" deleted
+pod "sivajavapod" deleted
+pod "vvtjavapod" deleted
+service "arjunjavasvc" deleted
+service "ashujavasvc" deleted
+service "ishitajavasvc" deleted
+service "kubernetes" deleted
+service "prasajavasvc" deleted
+service "rajspringbootservice" deleted
+service "shailjavasvc" deleted
+service "shreyajavasvc1" deleted
+
+```
+
+## Namespace 
+
+<img src="ns.png">
+
+```
+❯ kubectl  get  ns
+NAME              STATUS   AGE
+default           Active   23h
+kube-node-lease   Active   23h
+kube-public       Active   23h
+kube-system       Active   23h
+❯ kubectl  get  po
+No resources found in default namespace.
+
+```
+
+## k8s internal 
+
+```
+❯ kubectl  get  po  -n  kube-system
+NAME                                       READY   STATUS    RESTARTS      AGE
+calico-kube-controllers-58497c65d5-845j7   1/1     Running   1 (21h ago)   23h
+calico-node-kkqds                          1/1     Running   1 (21h ago)   23h
+calico-node-mvsf7                          1/1     Running   1 (21h ago)   23h
+calico-node-nj9bt                          1/1     Running   1 (21h ago)   23h
+coredns-78fcd69978-jn27m                   1/1     Running   1 (21h ago)   23h
+coredns-78fcd69978-n2rpr                   1/1     Running   1 (21h ago)   23h
+etcd-k8smaster                             1/1     Running   1 (21h ago)   23h
+kube-apiserver-k8smaster                   1/1     Running   1 (21h ago)   23h
+kube-controller-manager-k8smaster          1/1     Running   1 (21h ago)   23h
+kube-proxy-j5lxw                           1/1     Running   1 (21h ago)   23h
+kube-proxy-lb7bz                           1/1     Running   1 (21h ago)   23h
+kube-proxy-vq2b2                           1/1     Running   1 (21h ago)   23h
+kube-scheduler-k8smaster                   1/1     Running   1 (21h ago)   23h
+
+
+```
+
+## creating ns
+
+```
+❯ kubectl  create  namespace   ashu-space
+namespace/ashu-space created
+❯ 
+❯ 
+❯ 
+❯ kubectl  get  ns
+NAME              STATUS   AGE
+ashu-space        Active   16s
+default           Active   23h
+ishita-ns         Active   2s
+kube-node-lease   Active   23h
+kube-public       Active   23h
+kube-system       Active   23h
+raj-space         Active   1s
+shwetabh-space    Active   2s
+
+```
+
+## 
+
+```
+❯ kubectl  delete all --all  -n  ashu-space
+pod "ashujavapod" deleted
+service "ashujavasvc" deleted
+```
+
+### pod in ns
+
+```
+❯ kubectl  apply -f  ashupod1.yaml  -n  ashu-space
+pod/ashupod-123 created
+❯ kubectl  get  po  -n ashu-space
+NAME          READY   STATUS    RESTARTS   AGE
+ashupod-123   1/1     Running   0          19s
+```
+
+### setting namespace permanently 
+
+```
+❯ kubectl  config  get-contexts
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+          minikube                      minikube     minikube           default
+❯ kubectl  config set-context  --current --namespace=ashu-space
+Context "kubernetes-admin@kubernetes" modified.
+❯ 
+❯ kubectl  config  get-contexts
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   ashu-space
+          minikube                      minikube     minikube           default
+
+❯ kubectl  get  po
+NAME          READY   STATUS    RESTARTS   AGE
+ashupod-123   1/1     Running   0          2m45s
+❯ kubectl  get  svc
+No resources found in ashu-space namespace.
+
+
+```
+
+
+
+
 
 
