@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuweb1
+  name: ashuweb1 # name of deploy 
+spec:
+  replicas: 1 # number of POD 
+  selector: 
+    matchLabels:
+      app: ashuweb1
+  strategy: {}
+  template: # deploy will use template 
+    metadata:
+      creationTimestamp: null
+      labels: # label of POD 
+        app: ashuweb1
+    spec:
+      containers:
+      - image: dockerashu/oraclwebapp:v1 # docker image 
+        name: oraclwebapp # name of container 
+        resources: {}
+status: {}
