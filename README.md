@@ -510,7 +510,135 @@ No resources found in ashu-space namespace.
 ```
 
 
+ ## RC 
+ 
+ ```
+ ❯ ls
+ashupod1.yaml ashupod2.yaml ashurc1.yaml  ashusvc.yaml  javaweb.yml
+❯ kubectl apply -f  ashurc1.yaml
+replicationcontroller/myrc created
+service/ashujavasvc created
+❯ kubectl  get  rc
+NAME   DESIRED   CURRENT   READY   AGE
+myrc   1         1         1       8s
+❯ kubectl  get   po
+NAME         READY   STATUS    RESTARTS   AGE
+myrc-kgn5m   1/1     Running   0          15s
+❯ kubectl  get   svc
+NAME          TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+ashujavasvc   NodePort   10.98.242.97   <none>        1234:30191/TCP   19s
 
+```
+
+### scale 
+
+```
+❯ kubectl  get  rc
+NAME   DESIRED   CURRENT   READY   AGE
+myrc   1         1         1       2m27s
+❯ kubectl  scale  rc  myrc  --replicas=5
+replicationcontroller/myrc scaled
+❯ kubectl  get  rc
+NAME   DESIRED   CURRENT   READY   AGE
+myrc   5         5         2       2m44s
+❯ kubectl  get  rc
+NAME   DESIRED   CURRENT   READY   AGE
+myrc   5         5         5       2m49s
+❯ kubectl  get  po
+NAME         READY   STATUS    RESTARTS   AGE
+myrc-2mtc6   1/1     Running   0          12s
+myrc-5dlm9   1/1     Running   0          13s
+myrc-pkdkg   1/1     Running   0          13s
+myrc-r8lfz   1/1     Running   0          13s
+myrc-wpbgb   1/1     Running   0          47s
+❯ kubectl  get  po -o wide
+NAME         READY   STATUS    RESTARTS   AGE   IP              NODE      NOMINATED NODE   READINESS GATES
+myrc-2mtc6   1/1     Running   0          20s   192.168.34.37   minion1   <none>           <none>
+myrc-5dlm9   1/1     Running   0          21s   192.168.34.36   minion1   <none>           <none>
+myrc-pkdkg   1/1     Running   0          21s   192.168.34.34   minion1   <none>           <none>
+myrc-r8lfz   1/1     Running   0          21s   192.168.34.35   minion1   <none>           <none>
+myrc-wpbgb   1/1     Running   0          55s   192.168.34.31   minion1   <none>           <none>
+
+```
+
+### POd  -RC-RS-Deployment
+
+<img src="podep.png">
+
+
+## Deployment reality 
+
+<img src="dep.png">
+
+## create deploy 
+
+```
+❯ kubectl  create  deployment  ashuweb1  --image=dockerashu/oraclwebapp:v1  --dry-run=client -o yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuweb1
+  name: ashuweb1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuweb1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: a
+        
+        shuweb1
+    spec:
+      containers:
+      - image: dockerashu/oraclwebapp:v1
+        name: oraclwebapp
+        resources: {}
+status: {}
+
+````
+
+### 
+
+```
+❯ kubectl apply -f  ashudepl1.yaml
+deployment.apps/ashuweb1 created
+❯ kubectl  get  deploy
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb1   0/1     1            0           4s
+❯ kubectl  get  deployment
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb1   1/1     1            1           9s
+❯ kubectl  get  rs
+NAME                  DESIRED   CURRENT   READY   AGE
+ashuweb1-68888546c5   1         1         1       13s
+❯ kubectl  get  po
+NAME                        READY   STATUS    RESTARTS   AGE
+ashuweb1-68888546c5-b2c8b   1/1     Running   0          16s
+
+```
+
+### create service 
+
+```
+❯ kubectl  get  deploy
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb1   1/1     1            1           97s
+❯ kubectl  expose  deploy ashuweb1  --type NodePort --port 80
+service/ashuweb1 exposed
+❯ kubectl  get  svc
+NAME       TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+ashuweb1   NodePort   10.107.89.243   <none>        80:32430/TCP   4s
+```
+
+
+### final end user 
+<img src="final.png">
 
 
 
