@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashudb
+  name: ashudb # name of Deployment  
+spec:
+  replicas: 1 # no of pod 
+  selector:
+    matchLabels:
+      app: ashudb
+  strategy: {}
+  template: # pod template 
+    metadata:
+      creationTimestamp: null
+      labels: # label of poD 
+        app: ashudb
+    spec:
+      volumes: # creating volume 
+      - name: ashudbvol # name of volume 
+        nfs: 
+         server: 172.31.36.250 # Ip address of NFS server 
+         path: /data/ashu/  # here my DB data will be Stored 
+      containers:
+      - image: mysql:5.6 # docker image 
+        name: mysql # name of container 
+        volumeMounts: # mounting volume created above 
+        - name: ashudbvol
+          mountPath: /var/lib/mysql/ # mysql continer default location is /var/lib/mysql
+        env: # to create or Use env variable 
+        - name: MYSQL_ROOT_PASSWORD # env var for setting mysql root user password 
+          valueFrom: # reading value from some where
+           secretKeyRef: # calling secret object 
+            name: ashudbsec # name of secret 
+            key: key1 # key of secret 
+        resources: {}
+status: {}
+# creating secret 
+---
+apiVersion: v1
+data:
+  key1: T3JhY2xlMDk5
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: ashudbsec
+
+# creating DB pod service of CLusterIP type 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashudb
+  name: ashudb
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: ashudb
+  type: ClusterIP
+status:
+  loadBalancer: {}
+
+# creating web app
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuwebapp
+  name: ashuwebapp # deployment name 
+spec:
+  replicas: 1 # number of pod 
+  selector:
+    matchLabels:
+      app: ashuwebapp
+  strategy: {}
+  template: # to create POD 
+    metadata:
+      creationTimestamp: null
+      labels: # label of POD 
+        app: ashuwebapp
+    spec:
+      containers:
+      - image: wordpress:4.8-apache # docker image
+        name: wordpress # name of container 
+        env: 
+        - name: WORDPRESS_DB_HOST # db base Host 
+          value: ashudb  # name of DB svc 
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom: # reading password from somewhere
+           secretKeyRef: # calling secret 
+            name: ashudbsec # name of secret
+            key: key1 # key of secret 
+        resources: {}
+
+# creating svc for Deploy of NP type 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuwebapp
+  name: ashuwebapp
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ashuwebapp
+  type: NodePort
+status:
+  loadBalancer: {}
+
+  
