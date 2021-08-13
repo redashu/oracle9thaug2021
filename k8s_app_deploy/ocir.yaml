@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuwebapp
+  name: ashuwebapp # name of deployment  
+spec:
+  replicas: 1 # no of pod  
+  selector:
+    matchLabels:
+      app: ashuwebapp
+  strategy: {}
+  template: # pod template 
+    metadata:
+      creationTimestamp: null
+      labels: # label of pod 
+        app: ashuwebapp
+    spec:
+      imagePullSecrets: # to call image secret 
+      - name: ocrsec  # name of secret  
+      containers:
+      - image: phx.ocir.io/axmbtg8judkl/webapp:v001 # docker image 
+        name: webapp # name of container 
+        ports: # container Port optional field these days 
+        - containerPort: 80 
+        resources: {}
+status: {}

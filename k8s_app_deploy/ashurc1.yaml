@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+ name: myrc # name of RC 
+ labels: 
+  x: hellorc1 
+spec:
+ replicas: 1 # number of pod we want 
+ template: # RC will template to create POD 
+  metadata:
+   labels: # label of POD
+     x1: ashujavaapp
+  spec:
+   containers:
+   - name: ashuc1
+     image: dockerashu/javawebapp:12thaugv1
+     ports:
+     - containerPort: 8080
+
+# creating service 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ashu-space 
+  creationTimestamp: null
+  labels:
+    app: ashujavasvc
+  name: ashujavasvc # name of service 
+spec:
+  ports:
+  - name: 1234-8080
+    port: 1234 # svc port 
+    protocol: TCP
+    targetPort: 8080 # pod port 
+  selector: # pod finder 
+    x1: ashujavaapp # label of pod 
+  type: NodePort # type of service 
+status:
+  loadBalancer: {}
+
+  

@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: ashu-space 
+  creationTimestamp: null
+  labels: # label of POD 
+    x1: ashujavaapp
+  name: ashujavapod # name of pod 
+spec:
+  containers:
+  - image: dockerashu/javawebapp:12thaugv1 # docker image 
+    name: ashujavapod # name of container 
+    ports:
+    - containerPort: 8080 # app port 
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+# creating service 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ashu-space 
+  creationTimestamp: null
+  labels:
+    app: ashujavasvc
+  name: ashujavasvc # name of service 
+spec:
+  ports:
+  - name: 1234-8080
+    port: 1234 # svc port 
+    protocol: TCP
+    targetPort: 8080 # pod port 
+  selector: # pod finder 
+    x1: ashujavaapp # label of pod 
+  type: NodePort # type of service 
+status:
+  loadBalancer: {}
