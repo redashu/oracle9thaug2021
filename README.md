@@ -310,3 +310,100 @@ status:
   loadBalancer: {}
  
  ```
+
+## K8s. dashboard -- svc account 
+
+<img src="svcacc.png">
+
+### checking svaacc and secre 
+
+```
+2860  kubectl  create  ns  test 
+ 2861  kubectl  get  sa  -n  test  
+ 2862  kubectl  get  secret   -n  test  
+ 2863  kubectl  describe   secret  default-token-48zzm  -n  test  
+❯ kubectl delete ns  test
+namespace "test" deleted
+```
+
+### deploy dashboard
+
+```
+❯ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
+namespace/kubernetes-dashboard created
+serviceaccount/kubernetes-dashboard created
+service/kubernetes-dashboard created
+secret/kubernetes-dashboard-certs created
+secret/kubernetes-dashboard-csrf created
+secret/kubernetes-dashboard-key-holder created
+configmap/kubernetes-dashboard-settings created
+role.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrole.rbac.authorization.k8s.io/kubernetes-dashboard created
+rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+deployment.apps/kubernetes-dashboard created
+service/dashboard-metrics-scraper created
+Warning: spec.template.metadata.annotations[seccomp.security.alpha.kubernetes.io/pod]: deprecated since v1.19; use the "seccompProfile" field instead
+deployment.apps/dashboard-metrics-scraper created
+
+
+
+
+
+❯ kubectl  get  deploy -n kubernetes-dashboard
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+dashboard-metrics-scraper   1/1     1            1           25s
+kubernetes-dashboard        1/1     1            1           27s
+❯ kubectl  get  po  -n kubernetes-dashboard
+NAME                                         READY   STATUS    RESTARTS   AGE
+dashboard-metrics-scraper-856586f554-xx62j   1/1     Running   0          33s
+kubernetes-dashboard-78c79f97b4-tkzrz        1/1     Running   0          35s
+❯ kubectl  get  svc  -n kubernetes-dashboard
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+dashboard-metrics-scraper   ClusterIP   10.101.108.245   <none>        8000/TCP   45s
+kubernetes-dashboard        ClusterIP   10.108.250.121   <none>        443/TCP    53s
+❯ kubectl  get  sa  -n kubernetes-dashboard
+NAME                   SECRETS   AGE
+default                1         65s
+kubernetes-dashboard   1         64s
+❯ kubectl  get  secret  -n kubernetes-dashboard
+NAME                               TYPE                                  DATA   AGE
+default-token-sbd79                kubernetes.io/service-account-token   3      74s
+kubernetes-dashboard-certs         Opaque                                0      71s
+kubernetes-dashboard-csrf          Opaque                                1      70s
+kubernetes-dashboard-key-holder    Opaque                                2      70s
+kubernetes-dashboard-token-zpffv   kubernetes.io/service-account-token   3      73s
+
+```
+
+## changing svc type
+
+```
+❯ kubectl  get  svc  -n kubernetes-dashboard
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+dashboard-metrics-scraper   ClusterIP   10.101.108.245   <none>        8000/TCP   2m2s
+kubernetes-dashboard        ClusterIP   10.108.250.121   <none>        443/TCP    2m10s
+❯ kubectl  edit   svc  kubernetes-dashboard    -n kubernetes-dashboard
+service/kubernetes-dashboard edited
+❯ kubectl  get  svc  -n kubernetes-dashboard
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
+dashboard-metrics-scraper   ClusterIP   10.101.108.245   <none>        8000/TCP        2m45s
+kubernetes-dashboard        NodePort    10.108.250.121   <none>        443:32266/TCP   2m53s
+
+```
+
+## give power to svc account of dashboard
+
+
+```
+❯ kubectl  get  clusterroles
+NAME                                                                   CREATED AT
+admin                                                                  2021-08-11T10:25:52Z
+calico-kube-controllers                                                2021-08-11T10:27:02Z
+calico-node                                                            2021-08-11T10:27:02Z
+cluster-admin      
+
+```
+
+
+
